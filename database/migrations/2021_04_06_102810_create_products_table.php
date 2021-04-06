@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->date('disc_start')->nullable();
             $table->date('disc_end')->nullable();
             $table->timestamps();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
         });
     }
 
