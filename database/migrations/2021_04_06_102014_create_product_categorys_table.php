@@ -15,8 +15,12 @@ class CreateProductCategorysTable extends Migration
     {
         Schema::create('product_categorys', function (Blueprint $table) {
             $table->id();
+            $table->string('name',50);
+            $table->text('description')->nullable();
+            $table->string('path');
+            $table->string('image_name');
             $table->timestamps();
-             $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
         });
     }
 
