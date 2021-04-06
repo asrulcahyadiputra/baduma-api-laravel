@@ -29,19 +29,27 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255|unique:users',
+            'username'  => 'required|string|max:16|unique:users',
+            'password'  => 'required|string|min:6|confirmed',
+            'role_id'   => 'required'
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json([
+                'status'    => false,
+                'message'   => "Bad Request!",
+                'errors'    => $validator->errors()
+            ], 400);
         }
 
         $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
+            'name'      => $request->get('name'),
+            'username'  => $request->get('username'),
+            'email'     => $request->get('email'),
+            'password'  => Hash::make($request->get('password')),
+            'role_id'   => $request->get('role_id')
         ]);
 
         $token = JWTAuth::fromUser($user);
